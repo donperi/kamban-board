@@ -1,0 +1,95 @@
+/*.App {*/
+/*  text-align: center;*/
+/*}*/
+
+/*.App-logo {*/
+/*  animation: App-logo-spin infinite 20s linear;*/
+/*  height: 40vmin;*/
+/*  pointer-events: none;*/
+/*}*/
+
+/*.App-header {*/
+/*  background-color: #282c34;*/
+/*  min-height: 100vh;*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  font-size: calc(10px + 2vmin);*/
+/*  color: white;*/
+/*}*/
+
+/*.App-link {*/
+/*  color: #61dafb;*/
+/*}*/
+
+/*@keyframes App-logo-spin {*/
+/*  from {*/
+/*    transform: rotate(0deg);*/
+/*  }*/
+/*  to {*/
+/*    transform: rotate(360deg);*/
+/*  }*/
+/*}*/
+
+html, body, #root, .App { height: 100%; }
+
+
+.height-full {
+  height: 100%;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+#toast-container > div {
+  width: 400px;
+}
+
+.Stage {
+  min-width: 350px;
+  max-width: 350px;
+  margin: 0px 10px;
+  display: flex;
+  flex-direction: column;
+  background: #eff1f3;
+  border-radius: 6px;
+  padding: 10px;
+  border: 1px solid #e1e4e8;
+}
+
+.Task {
+  &.Task-selected {
+    background-color: #b5dff3;
+  }
+
+  &.Task-ghost {
+    background-color: #a29ba3;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .card-text.small {
+    font-size: 12;
+    margin-bottom: 3px;
+  }
+}
+
+
+.TaskDetail {
+  ul {
+    list-style: none;
+    padding: 0px;
+    li {
+      font-size: 14px;
+    }
+  }
+}
+
+
+.FilterBadge {
+  font-size: 11px;
+}
