@@ -9,8 +9,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import BulkEditMenu from "./BulkEditMenu";
 import Badge from "react-bootstrap/Badge";
 import FilterForm from "./FIlterForm";
+import SettingsForm from "./SettingsForm";
 
-const Menu = ({ isFiltering, filteredTasks, search, selectedTasks, location, history }) => {
+const Menu = ({ isFiltering, filteredTasks, selectedTasks, history, settings }) => {
   let filterBadge = null;
   if (filteredTasks) {
     filterBadge = (<Badge variant={'info'} className='mr-2'>ON</Badge>)
@@ -18,7 +19,7 @@ const Menu = ({ isFiltering, filteredTasks, search, selectedTasks, location, his
 
   const handleClear = () => {
     history.push({
-      pathname: location.pathname,
+      pathname: history.location.pathname,
       search: ''
     });
   }
@@ -30,7 +31,7 @@ const Menu = ({ isFiltering, filteredTasks, search, selectedTasks, location, his
       <div className="ml-auto d-flex flex-column flex-sm-row flex-grow-1">
         <ButtonToolbar className="ml-auto">
           {isFiltering && <div className={'p-2'}>Filtering...</div>}
-          <Dropdown key={search} className="mr-2">
+          <Dropdown key={history.location.search} className="mr-2">
             <Dropdown.Toggle variant="outline-success" id="filter-menu">
               {filterBadge}
               Filter
@@ -41,11 +42,11 @@ const Menu = ({ isFiltering, filteredTasks, search, selectedTasks, location, his
               selectedTasks={selectedTasks}
               onClear={handleClear}
               history={history}
-              location={location}
             />
           </Dropdown>
 
-          {filteredTasks && (
+          {filteredTasks
+          && (
             <Button variant="danger" className="mr-2" onClick={handleClear}>
               Clear Filter
             </Button>
@@ -65,10 +66,19 @@ const Menu = ({ isFiltering, filteredTasks, search, selectedTasks, location, his
               <Dropdown.Menu alignRight as={BulkEditMenu} selectedTasks={selectedTasks} />
             </Dropdown>
           )}
-          <Button variant="outline-secondary">
-            <FontAwesomeIcon icon="cog" className="mr-1" />
-            Settings
-          </Button>
+          <Dropdown key={JSON.stringify(settings)} className="mr-2">
+            <Dropdown.Toggle variant="outline-secondary" id="settings-menu">
+              <FontAwesomeIcon icon="cog" className="mr-1" />
+              Settings
+            </Dropdown.Toggle>
+            <Dropdown.Menu
+              alignRight
+              as={SettingsForm}
+              selectedTasks={selectedTasks}
+              onClear={handleClear}
+              history={history}
+            />
+          </Dropdown>
         </ButtonToolbar>
       </div>
     </Navbar>

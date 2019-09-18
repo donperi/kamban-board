@@ -1,4 +1,13 @@
-import {addTasks, addStages, deleteTask, addTags, addUsers, addNewTask, addFilteredTasks} from "../modules/kanban";
+import {
+  addTasks,
+  addStages,
+  deleteTask,
+  addTags,
+  addUsers,
+  addNewTask,
+  addFilteredTasks,
+  setSettings
+} from "../modules/kanban";
 import {apiUrl, apiRequest} from "../utils";
 
 export const fetchTask = (id) => async (dispatch) => {
@@ -168,5 +177,32 @@ export const createUser = (body) => async (dispatch) => {
   }
 
   dispatch(addUsers([response.data]));
-  return response.data
+  return response.data;
+};
+
+// Settings
+
+export const fetchSettings = () => async (dispatch) => {
+  const response = await  apiRequest(apiUrl('/api/settings'));
+
+  if (response.error) {
+    return Promise.reject(response);
+  }
+
+  dispatch(setSettings(response.data));
+  return response.data;
+};
+
+export const updateSettings = (settings) => async (dispatch) => {
+  const response = await apiRequest(apiUrl('/api/settings'), {
+    method: 'put',
+    body: JSON.stringify(settings)
+  });
+
+  if (response.error) {
+    return Promise.reject(response);
+  }
+
+  dispatch(setSettings(response.data));
+  return response.data;
 };

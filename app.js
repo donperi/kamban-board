@@ -1,24 +1,23 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const { setupDatabase } = require('./db');
-
 const port = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const app = express();
+const { setupDatabase } = require('./db');
+const routes = require('./routes');
 
-const tasksRouter = require('./routes/tasks');
+const app = express();
 
 (async () => {
   await setupDatabase();
 
   app.use(bodyParser.json());
   app.use(express.static(path.join(__dirname, 'client/build')));
-  app.use(tasksRouter);
+  app.use(Object.values(routes));
 
   app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname+'/client/build/index.html'));

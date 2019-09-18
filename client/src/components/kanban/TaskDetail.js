@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from "react-bootstrap/Button";
 import {withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchTask} from "../../services/tasks";
+import {fetchTask} from "../../services/kanban";
 
 const TaskDetail = ({ history, match }) => {
   const [show, setShow] = useState(true);

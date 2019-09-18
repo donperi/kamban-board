@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import {withRouter} from "react-router-dom";
 
 import TaskForm from "./TaskForm";
-import {createTask} from "../../services/tasks";
+import {createTask} from "../../services/kanban";
 
 const AddTaskForm = ({ history }) => {
   const [show, setShow] = useState(true);

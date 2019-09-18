@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import toastr from 'toastr';
 import moment from 'moment';
 
-import {deleteTaskOnApi} from "../../services/tasks";
+import {deleteTaskOnApi} from "../../services/kanban";
 import FilterBadge from "./FilterBadge";
 import Badge from "react-bootstrap/Badge";
 

@@ -1,4 +1,5 @@
 const HttpStatus = require('http-status-codes');
+const moment = require('moment');
 
 const appResponse = (res, data, status = HttpStatus.OK, message = null) => {
   if (!message) {
@@ -35,20 +36,39 @@ const filterMapper = (filters, mapper = {}) => {
 
     return carry;
   }, {});
-}
+};
 
 const filterUndefinedValues  = (obj) => {
   Object.keys(obj).forEach(function (key) {
-    if(typeof obj[key] === 'undefined'){
+    if(obj[key] === undefined){
       delete obj[key];
     }
   });
 
   return obj;
-}
+};
+
+const objectIdSanitizer = value => {
+  if (value === undefined) { return; }
+  if (value === "null") { return null; }
+  if (!value || !ObjectId.isValid(value)) { return new ObjectId(); }
+
+  return value;
+};
+
+const nullStringSanitizer = value => value || null;
+
+const dateSanitizer  = value => {
+  if (value === 'null' || !value) { return value; }
+  return moment(value).toDate();
+};
+
 
 module.exports = {
   appResponse,
   filterMapper,
   filterUndefinedValues,
+  objectIdSanitizer,
+  dateSanitizer,
+  nullStringSanitizer
 };

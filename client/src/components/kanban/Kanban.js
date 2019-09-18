@@ -12,16 +12,17 @@ import EditTaskForm from "./EditTaskForm";
 import Menu from "./Menu";
 import useKanbanInitializer from "../../effects/useKanbanInitializer";
 import useFilteredTasks from "../../effects/useFilteredTasks";
-import {moveTasksOnApi} from "../../services/tasks";
+import {moveTasksOnApi} from "../../services/kanban";
 
 const KanBan = ({ history }) => {
   const dispatch = useDispatch();
 
-  const [tasks, stages, loading] = useKanbanInitializer();
+  const { tasks, stages, settings, loading } = useKanbanInitializer();
   const [filteredTasks, loadingFilteredTasks] = useFilteredTasks(history.location);
 
   const [selectedTasks, setSelectedTask] = useState([]);
   const [draggingTaskId, setDraggingTaskId] = useState(null);
+
 
   const handleTaskSelection =  useCallback((taskId, reset = false) => {
     const index = selectedTasks.indexOf(taskId);
@@ -81,10 +82,11 @@ const KanBan = ({ history }) => {
   if (loading) {
     return <h3 className="text-center mt-3">Loading Board...</h3>
   }
-console.log('h', history.location)
+
   return (
     <>
       <Menu
+        settings={settings}
         filteredTasks={filteredTasks}
         isFiltering={loadingFilteredTasks}
         search={history.location.search}
@@ -103,6 +105,7 @@ console.log('h', history.location)
                 selectedTasks={selectedTasks}
                 draggingTaskId={draggingTaskId}
                 history={history}
+                settings={settings}
               />
             );
           })}

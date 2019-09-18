@@ -18,8 +18,6 @@ class TaskRepository {
       )
     });
 
-    console.log(filters)
-
     return Task.find(filters);
   }
 

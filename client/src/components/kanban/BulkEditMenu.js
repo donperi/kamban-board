@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {bulkEditTasks, createUser} from "../../services/tasks";
+import {bulkEditTasks, createUser} from "../../services/kanban";
 import {Field, Formik} from "formik";
 import Form from "react-bootstrap/Form";
 import CreatableSelectField from "../CreatableSelectField";

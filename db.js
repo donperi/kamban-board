@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Stage = require('./models/Stage');
 const Tag = require('./models/Tag');
+const Setting = require('./models/Setting');
 const { STAGES, TAGS } = require('./constants');
 
 const setupDatabase = async () => {
@@ -16,8 +17,7 @@ const setupDatabase = async () => {
     return;
   }
 
-
-  // Setup Stages
+  // Stages Setup
   for (const stage of Object.values(STAGES)) {
     try {
       await (new Stage({ name: stage })).save();
@@ -26,13 +26,42 @@ const setupDatabase = async () => {
     }
   }
 
-  // Setup Tags
+  // Tags Setup
   for (const tag of TAGS) {
     try {
       await (new Tag({ name: tag })).save();
     } catch (e) {
       console.log(`Skipping tag creation: "${tag}" already exists`);
     }
+  }
+
+  // Settings Setup
+  let settings = await Setting.findOne({});
+  if  (!settings) {
+    settings = await Setting.create({});
+  }
+
+  const defaultSettingResolver = {
+    visible_stages: async () => {
+      const stages = await Stage.find({});
+      return stages.reduce((carry, stage) => {
+        carry[stage._id] = true;
+        return carry;
+      }, {});
+    }
+  }
+
+  const defaultValues = await Object.keys(defaultSettingResolver).reduce(async (prevPromise, key) => {
+    const carry = await prevPromise;
+    if (settings[key]) { return carry; }
+
+    carry[key] = await defaultSettingResolver[key]();
+    return carry;
+  }, Promise.resolve({}));
+
+  if (Object.keys(defaultValues).length) {
+    console.log('Create default values for settings' , defaultValues);
+    await Setting.updateOne({}, defaultValues)
   }
 };
 

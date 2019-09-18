@@ -31,12 +31,16 @@ export const addTags = createAction('add/tags');
 /** @payload [User] */
 export const addUsers = createAction('add/users');
 
+/** @payload [Setting] */
+export const setSettings = createAction('set/settings');
+
 const initialState = {
   stages: {},
   tasks: {},
   filtered_tasks: null,
   tags: {},
-  users: {}
+  users: {},
+  settings: {},
 };
 
 const removeArrayElement = (arr, el) => {
@@ -101,7 +105,7 @@ const reducer  = createReducer(initialState, {
       ...task
     };
   }),
-  [clearTaskFilter]: (state, action) => produce(state, draft => {
+  [clearTaskFilter]: (state) => produce(state, draft => {
     draft.filtered_tasks = null;
   }),
   [addTags]: (state, action) => produce(state, draft => {
@@ -117,6 +121,9 @@ const reducer  = createReducer(initialState, {
       draft.users[user._id] = user;
     });
   }),
+  [setSettings]: (state, action) => produce(state, draft => {
+    draft.settings = action.payload;
+  })
 });
 
 export default reducer

@@ -9,7 +9,7 @@ import SelectField from "../SelectField";
 import BootstrapDatePicker from "../BoostrapDatePicker";
 import moment from "moment";
 
-const FilterForm = React.forwardRef(({ styles, className, location, history, onClear }, ref) => {
+const FilterForm = React.forwardRef(({ styles, className, history, onClear }, ref) => {
   const tags = useSelector(state => state.kanban.tags);
   const users = useSelector(state => state.kanban.users);
 
@@ -23,7 +23,7 @@ const FilterForm = React.forwardRef(({ styles, className, location, history, onC
     label: user.name
   }));
 
-  const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const query = qs.parse(history.location.search, { ignoreQueryPrefix: true });
 
   const handleSubmit = (values) => {
     Object.keys(values).forEach((key) => !values[key] && delete values[key]);
@@ -33,7 +33,7 @@ const FilterForm = React.forwardRef(({ styles, className, location, history, onC
     }
 
     history.push({
-      pathname: location.pathname,
+      pathname: history.location.pathname,
       search: qs.stringify(values, { addQueryPrefix: true })
     });
   };
@@ -94,6 +94,7 @@ const FilterForm = React.forwardRef(({ styles, className, location, history, onC
                 variant="success"
                 className="mr-2"
                 type="submit"
+                disabled={!props.dirty}
               >
                 Submit
               </Button>

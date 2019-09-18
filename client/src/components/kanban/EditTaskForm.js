@@ -5,7 +5,7 @@ import {withRouter} from "react-router-dom";
 import toastr from 'toastr';
 
 import TaskForm from "./TaskForm";
-import {updateTask} from "../../services/tasks";
+import {updateTask} from "../../services/kanban";
 
 const AddTaskForm = ({ match, history }) => {
   const [show, setShow] = useState(true);

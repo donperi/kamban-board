@@ -2,7 +2,10 @@ import Task from "./Task";
 import React from "react";
 import {Droppable} from "react-beautiful-dnd";
 
-const Stage = ({ allTasks, stage, selectedTasks, draggingTaskId, onTaskSelection, history }) => {
+const Stage = ({ allTasks, stage, selectedTasks, draggingTaskId, onTaskSelection, history, settings }) => {
+  if (settings.visible_stages && settings.visible_stages[stage._id] === false) {
+    return null;
+  }
 
   return (
     <div className="Stage">
