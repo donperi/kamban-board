@@ -16,6 +16,12 @@ export const addNewTask = createAction('add_new_task');
 /** @payload Number */
 export const deleteTask = createAction('delete/task');
 
+/** @payload [Task] */
+export const addFilteredTasks = createAction('add/filtered_tasks');
+
+/** @payload */
+export const clearTaskFilter = createAction('clear_task_filter');
+
 /** @payload { id: Number, task: Task } */
 export const updateTask = createAction('update/task');
 
@@ -28,6 +34,7 @@ export const addUsers = createAction('add/users');
 const initialState = {
   stages: {},
   tasks: {},
+  filtered_tasks: null,
   tags: {},
   users: {}
 };
@@ -64,6 +71,13 @@ const reducer  = createReducer(initialState, {
       draft.tasks[task._id] = task;
     });
   }),
+  [addFilteredTasks]: (state, action) => produce(state, draft => {
+    const tasks = action.payload;
+    draft.filtered_tasks = {};
+    tasks.forEach((task) => {
+      draft.filtered_tasks[task._id] = task;
+    });
+  }),
   [addNewTask]: (state, action) => produce(state, draft => {
     const task = action.payload;
     draft.tasks[task._id] = task;
@@ -87,7 +101,9 @@ const reducer  = createReducer(initialState, {
       ...task
     };
   }),
-
+  [clearTaskFilter]: (state, action) => produce(state, draft => {
+    draft.filtered_tasks = null;
+  }),
   [addTags]: (state, action) => produce(state, draft => {
     const tags = action.payload;
     tags.forEach((tag) => {

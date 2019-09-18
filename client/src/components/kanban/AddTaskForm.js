@@ -12,7 +12,12 @@ const AddTaskForm = ({ history }) => {
 
   const onHide = () => {
     setShow(false);
-    setTimeout(() => { history.push('/'); }, 200);
+    setTimeout(() => {
+      history.push({
+        pathname: '/',
+        search: history.location.search
+      });
+    }, 200);
   };
 
   const handleSubmit = async (values, actions) => {

@@ -1,10 +1,8 @@
 import Task from "./Task";
 import React from "react";
-import {useSelector} from "react-redux";
 import {Droppable} from "react-beautiful-dnd";
 
-const Stage = ({ stage, selectedTasks, draggingTaskId, onTaskSelection }) => {
-  const allTasks = useSelector(state => state.kanban.tasks);
+const Stage = ({ allTasks, stage, selectedTasks, draggingTaskId, onTaskSelection, history }) => {
 
   return (
     <div className="Stage">
@@ -17,7 +15,10 @@ const Stage = ({ stage, selectedTasks, draggingTaskId, onTaskSelection }) => {
           >
             {
               stage.tasks.map((taskId, index) => {
-                const task = { ...allTasks[taskId] };
+                const task = allTasks[taskId];
+                if (!task) {
+                  return null;
+                }
                 const isSelected = selectedTasks.indexOf(taskId) !== -1;
                 const isGhost = draggingTaskId && isSelected && draggingTaskId !== taskId;
 
@@ -31,6 +32,7 @@ const Stage = ({ stage, selectedTasks, draggingTaskId, onTaskSelection }) => {
                     selectedTasks={selectedTasks}
                     onTaskSelection={onTaskSelection}
                     selectionCount={selectedTasks.length}
+                    history={history}
                   />
                 );
               })

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-    /*
+/*
 Title
 Description
 Tag (SEO article, longform, blog post)
@@ -16,7 +16,7 @@ const TaskSchema = new mongoose.Schema({
   assignee: { type: mongoose.Schema.Types.ObjectId,  ref: 'User', default: null },
   due_date: { type: Date, default: null },
   time_estimates: { type: String,  default: null },
-  tags: [{ type: mongoose.Schema.Types.ObjectId,  ref: 'Tag', unique: true }],
+  tags: [{ type: mongoose.Schema.Types.ObjectId,  ref: 'Tag'}],
   stage: { type: mongoose.Schema.Types.ObjectId,  ref: 'Stage' }
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from "react-select";
 
-const SelectField = ({ options, field, form, isMulti, placeholder }) => {
+const SelectField = ({ options, field, form, isMulti, ...props }) => {
 
   const getValue = () => {
     if (options && field.value) {
@@ -30,7 +30,7 @@ const SelectField = ({ options, field, form, isMulti, placeholder }) => {
       value={getValue()}
       onChange={onChange}
       onBlur={field.onBlur}
-      placeholder={placeholder}
+      {...props}
     />
   );
 }

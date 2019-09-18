@@ -1,27 +1,56 @@
 import React from 'react';
 import Navbar from "react-bootstrap/Navbar";
-import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
-import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-import {NavLink} from "react-router-dom";
+import {NavLink, withRouter} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 import BulkEditMenu from "./BulkEditMenu";
 import Badge from "react-bootstrap/Badge";
+import FilterForm from "./FIlterForm";
 
-const Menu = ({ selectedTasks }) => {
+const Menu = ({ isFiltering, filteredTasks, search, selectedTasks, location, history }) => {
+  let filterBadge = null;
+  if (filteredTasks) {
+    filterBadge = (<Badge variant={'info'} className='mr-2'>ON</Badge>)
+  }
+
+  const handleClear = () => {
+    history.push({
+      pathname: location.pathname,
+      search: ''
+    });
+  }
+
   return (
     <Navbar bg="light" expand="lg" className="mb-3 d-block d-md-flex">
-      <Navbar.Brand href="#home" className="w-25">Kanban-Board</Navbar.Brand>
+      <Navbar.Brand className="w-25">Kanban-Board</Navbar.Brand>
 
       <div className="ml-auto d-flex flex-column flex-sm-row flex-grow-1">
-        <Form className="mr-sm-2 d-flex mb-2 mb-sm-0 flex-grow-1">
-          <FormControl type="text" placeholder="Search" className="mr-2 flex-grow-1" />
-          <Button variant="outline-success" className="flex-grow-0">Filter</Button>
-        </Form>
         <ButtonToolbar className="ml-auto">
+          {isFiltering && <div className={'p-2'}>Filtering...</div>}
+          <Dropdown key={search} className="mr-2">
+            <Dropdown.Toggle variant="outline-success" id="filter-menu">
+              {filterBadge}
+              Filter
+            </Dropdown.Toggle>
+            <Dropdown.Menu
+              alignRight
+              as={FilterForm}
+              selectedTasks={selectedTasks}
+              onClear={handleClear}
+              history={history}
+              location={location}
+            />
+          </Dropdown>
+
+          {filteredTasks && (
+            <Button variant="danger" className="mr-2" onClick={handleClear}>
+              Clear Filter
+            </Button>
+          )}
+
           <NavLink to="/task/add" className="mr-2 btn btn-outline-primary">
             <FontAwesomeIcon icon="plus" className="mr-1" />
             Add Task
@@ -46,4 +75,4 @@ const Menu = ({ selectedTasks }) => {
   )
 };
 
-export default Menu;
+export default withRouter(Menu);

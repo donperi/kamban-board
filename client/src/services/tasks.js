@@ -1,4 +1,4 @@
-import {addTasks, addStages, deleteTask, addTags, addUsers, addNewTask} from "../modules/kanban";
+import {addTasks, addStages, deleteTask, addTags, addUsers, addNewTask, addFilteredTasks} from "../modules/kanban";
 import {apiUrl, apiRequest} from "../utils";
 
 export const fetchTask = (id) => async (dispatch) => {
@@ -9,10 +9,10 @@ export const fetchTask = (id) => async (dispatch) => {
   }
 
   dispatch(addTasks([response.data]));
-  return Promise.resolve(response.data)
+  return response.data
 };
 
-export const fetchTasks = (query = {}) => async (dispatch) => {
+export const fetchTasks = () => async (dispatch) => {
   const response = await apiRequest(apiUrl('/api/tasks'));
 
   if (response.error) {
@@ -20,7 +20,7 @@ export const fetchTasks = (query = {}) => async (dispatch) => {
   }
 
   dispatch(addTasks(response.data));
-  return Promise.resolve(response.data);
+  return response.data;
 };
 
 export const createTask = (task) => async (dispatch) => {
@@ -36,8 +36,8 @@ export const createTask = (task) => async (dispatch) => {
   }
 
   dispatch(addNewTask(response.data));
-  return Promise.resolve(response.data);
-}
+  return response.data;
+};
 
 export const updateTask = (id, task) => async (dispatch) => {
   task.assignee = task.assignee || null;
@@ -52,8 +52,8 @@ export const updateTask = (id, task) => async (dispatch) => {
   }
 
   dispatch(addTasks([response.data]));
-  return Promise.resolve(response.data);
-}
+  return response.data;
+};
 
 export const bulkEditTasks =(tasksIds, props) => async (dispatch) => {
   const data = { tasks: tasksIds, ...props };
@@ -68,8 +68,19 @@ export const bulkEditTasks =(tasksIds, props) => async (dispatch) => {
   }
 
   dispatch(addTasks(response.data));
-  return Promise.resolve(response.data)
+  return response.data
 
+};
+
+export const filterTasks = (query = {}) => async (dispatch) => {
+  const response = await apiRequest(apiUrl('/api/tasks', query));
+
+  if (response.error) {
+    return Promise.reject(response);
+  }
+
+  dispatch(addFilteredTasks(response.data));
+  return response.data;
 };
 
 export const fetchStages = () => async (dispatch) => {
@@ -80,7 +91,7 @@ export const fetchStages = () => async (dispatch) => {
   }
 
   dispatch(addStages(response.data));
-  return Promise.resolve(response.data)
+  return response.data;
 };
 
 export const moveTasksOnApi = (tasksIds, toStageId, atIndex) => async (dispatch) => {
@@ -103,8 +114,8 @@ export const moveTasksOnApi = (tasksIds, toStageId, atIndex) => async (dispatch)
   dispatch(addStages(response.data.stages));
   dispatch(addTasks(response.data.tasks));
 
-  Promise.resolve(response.data);
-}
+  return response.data;
+};
 
 export const deleteTaskOnApi = (taskId) => async (dispatch) => {
   const response = await apiRequest(apiUrl(`/api/tasks/${taskId}`), {
@@ -112,12 +123,12 @@ export const deleteTaskOnApi = (taskId) => async (dispatch) => {
   });
 
   if (response.error) {
-    return Promise.reject(response)
+    return Promise.reject(response);
   }
 
   dispatch(deleteTask(taskId));
-  return Promise.resolve(true);
-}
+  return true;
+};
 
 // Tags
 
@@ -129,7 +140,7 @@ export const fetchTags = () => async (dispatch) => {
   }
 
   dispatch(addTags(response.data));
-  return Promise.resolve(response.data);
+  return response.data;
 };
 
 
@@ -143,19 +154,19 @@ export const fetchUsers = () => async (dispatch) => {
   }
 
   dispatch(addUsers(response.data));
-  return Promise.resolve(response.data);
+  return response.data;
 };
 
 export const createUser = (body) => async (dispatch) => {
   const response = await apiRequest('/api/users', {
     method: 'post',
     body: JSON.stringify(body)
-  })
+  });
 
   if (response.error) {
     return Promise.reject(response)
   }
 
   dispatch(addUsers([response.data]));
-  return Promise.resolve(response.data)
+  return response.data
 };

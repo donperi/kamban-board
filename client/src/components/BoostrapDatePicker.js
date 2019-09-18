@@ -17,7 +17,6 @@ const BootstrapDatePicker = ({ field, form, ...props }) => {
         ref={inputRef}
         selected={field.value ? new Date(field.value) : ''}
         onChange={(date) => {
-          console.log('date', field);
           form.setFieldValue(
             field.name,
             date

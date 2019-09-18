@@ -1,8 +1,28 @@
+const moment = require('moment');
 const Task = require('../models/Task');
 const Stage = require('../models/Stage');
 const { STAGES } = require('../constants');
+const { filterMapper } = require('../utils');
+
 
 class TaskRepository {
+  static async find(filters) {
+    filters = filterMapper(filters, {
+      title: value => new RegExp(value, 'i'),
+      time_estimates: value => value === 'null' ? null : value,
+      due_date: (value) => (
+        {
+          $gte: moment(value).toDate(),
+          $lte: moment(value).endOf('day').toDate()
+        }
+      )
+    });
+
+    console.log(filters)
+
+    return Task.find(filters);
+  }
+
   static async create(props) {
     const task = new Task(props);
     const todoStage = await Stage.findByName(STAGES.TODO);

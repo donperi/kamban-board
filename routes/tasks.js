@@ -1,21 +1,48 @@
 const router = require('express').Router();
+const { sanitizeQuery, sanitizeBody, matchedData } = require('express-validator');
+const ObjectId = require('mongoose').Types.ObjectId;
+const moment = require('moment');
 
 const Task = require('../models/Task');
 const Stage = require('../models/Stage');
 const Tag = require('../models/Tag');
 const User = require('../models/User');
 const TaskRepository = require('../repositories/tasksRepository');
-const { appResponse } = require('../utils');
+const { appResponse, filterUndefinedValues  } = require('../utils');
+
+const objectIdSanitizer = value => {
+  if (value === undefined) { return; }
+  if (value === "null") { return null; }
+  if (!value || !ObjectId.isValid(value)) { return new ObjectId(); }
+
+  return value;
+};
+
+const nullStringSanitizer = value => value || null;
+
+const dateSanitizer  = value => {
+  if (value === 'null' || !value) { return value; }
+  return moment(value).toDate();
+};
 
 router.get('/api/stages', async (req, res) => {
   const stages = await Stage.find({})
   appResponse(res, stages);
 });
 
-
-router.get('/api/tasks', async (req, res) => {
-  const tasks = await Task.find({});
-  appResponse(res, tasks);
+router.get('/api/tasks', [
+  sanitizeQuery('title'),
+  sanitizeQuery('time_estimates'),
+  sanitizeQuery('assignee').customSanitizer(objectIdSanitizer),
+  sanitizeQuery('tags').customSanitizer(objectIdSanitizer),
+  sanitizeQuery('due_date').customSanitizer(dateSanitizer)
+], async (req, res) => {
+  try {
+    const tasks = await TaskRepository.find(req.query || {});
+    appResponse(res, tasks);
+  } catch (e) {
+    appResponse(res, {}, 500, e.message);
+  }
 });
 
 router.get('/api/tasks/:id', async (req, res) => {
@@ -27,8 +54,12 @@ router.get('/api/tasks/:id', async (req, res) => {
   }
 });
 
-router.post('/api/tasks', async (req, res) => {
+router.post('/api/tasks', [
+  sanitizeBody('due_date').customSanitizer(dateSanitizer),
+  sanitizeBody('time_estimates').customSanitizer(nullStringSanitizer)
+], async (req, res) => {
   try {
+    console.log(req.body)
     const newTask = await TaskRepository.create(req.body);
     appResponse(res, newTask);
   } catch (e) {
@@ -64,7 +95,10 @@ router.put('/api/tasks/move', async (req, res) => {
   }
 });
 
-router.put('/api/tasks/:id', async (req, res) => {
+router.put('/api/tasks/:id', [
+  sanitizeBody('due_date').customSanitizer(dateSanitizer),
+  sanitizeBody('time_estimates').customSanitizer(nullStringSanitizer)
+], async (req, res) => {
   try {
     const task = await TaskRepository.update(req.params.id, req.body);
 
@@ -105,7 +139,6 @@ router.post('/api/users', async (req, res) => {
     appResponse(res, e.errors, 400, e.message);
   }
 });
-
 
 router.get('/api/tags', async (req,res) => {
   try {
