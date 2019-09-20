@@ -45,7 +45,7 @@ const FilterForm = React.forwardRef(({ styles, className, history, onClear }, re
       <Formik
         initialValues={{
           title: query.title || '',
-          tag: query.tag || '',
+          tags: query.tags || '',
           due_date: initialDueDate || '',
           assignee: query.assignee || ''
         }}
