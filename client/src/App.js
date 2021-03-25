@@ -1,6 +1,6 @@
-import React from 'react';
-import 'toastr/build/toastr.min.css';
-import './App.scss';
+import React from "react";
+import "toastr/build/toastr.min.css";
+import "./App.scss";
 import KanBan from "./components/kanban/Kanban";
 
 function App() {

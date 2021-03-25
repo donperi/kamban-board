@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 /*
 Title
@@ -12,13 +12,16 @@ Stage (to do, in progress, ready for review, done)
 
 const TaskSchema = new mongoose.Schema({
   title: { required: true, type: String },
-  description: { type: String, default: '' },
-  assignee: { type: mongoose.Schema.Types.ObjectId,  ref: 'User', default: null },
+  description: { type: String, default: "" },
+  assignee: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+  },
   due_date: { type: Date, default: null },
-  time_estimates: { type: String,  default: null },
-  tags: [{ type: mongoose.Schema.Types.ObjectId,  ref: 'Tag'}],
-  stage: { type: mongoose.Schema.Types.ObjectId,  ref: 'Stage' }
+  time_estimates: { type: String, default: null },
+  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
+  stage: { type: mongoose.Schema.Types.ObjectId, ref: "Stage" },
 });
 
-
-module.exports = mongoose.model('Task', TaskSchema);
+module.exports = mongoose.model("Task", TaskSchema);

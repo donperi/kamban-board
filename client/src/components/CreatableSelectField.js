@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
-import toastr from 'toastr';
+import React, { useState } from "react";
+import toastr from "toastr";
 import CreatableSelect from "react-select/creatable";
 
-const CreatableSelectField = ({ options, onCreateOption, field, form, isMulti, ...props }) => {
+const CreatableSelectField = ({
+  options,
+  onCreateOption,
+  field,
+  form,
+  isMulti,
+  ...props
+}) => {
   const [loading, setLoading] = useState(false);
 
   const getValue = () => {
     if (options && field.value) {
       return isMulti
-        ? options.filter(option => field.value.indexOf(option.value) >= 0)
-        : options.find(option => option.value === field.value);
+        ? options.filter((option) => field.value.indexOf(option.value) >= 0)
+        : options.find((option) => option.value === field.value);
     } else {
       return isMulti ? [] : "";
     }

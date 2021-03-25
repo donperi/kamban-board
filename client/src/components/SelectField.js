@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
 import Select from "react-select";
 
 const SelectField = ({ options, field, form, isMulti, ...props }) => {
-
   const getValue = () => {
     if (options && field.value) {
       return isMulti
-        ? options.filter(option => field.value.indexOf(option.value) >= 0)
-        : options.find(option => option.value === field.value);
+        ? options.filter((option) => field.value.indexOf(option.value) >= 0)
+        : options.find((option) => option.value === field.value);
     } else {
       return isMulti ? [] : "";
     }
@@ -33,6 +32,6 @@ const SelectField = ({ options, field, form, isMulti, ...props }) => {
       {...props}
     />
   );
-}
+};
 
 export default SelectField;

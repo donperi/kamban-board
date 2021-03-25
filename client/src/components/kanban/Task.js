@@ -1,27 +1,37 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Button from "react-bootstrap/Button";
-import {Draggable} from "react-beautiful-dnd";
-import classNames from 'classnames';
-import toastr from 'toastr';
-import moment from 'moment';
+import { Draggable } from "react-beautiful-dnd";
+import classNames from "classnames";
+import toastr from "toastr";
+import moment from "moment";
 
-import {deleteTaskOnApi} from "../../services/kanban";
+import { deleteTaskOnApi } from "../../services/kanban";
 import FilterBadge from "./FilterBadge";
 import Badge from "react-bootstrap/Badge";
 
-const Task = ({ task, index, isSelected, isGhost, onTaskSelection, selectionCount, history }) => {
+const Task = ({
+  task,
+  index,
+  isSelected,
+  isGhost,
+  onTaskSelection,
+  selectionCount,
+  history,
+}) => {
   const dispatch = useDispatch();
-  const users = useSelector(state => state.kanban.users);
-  const tags = useSelector(state => state.kanban.tags);
-  const assignee = users[task.assignee] ? {
-    _id: users[task.assignee]._id,
-    name: users[task.assignee].name
-  } : { _id: null };
+  const users = useSelector((state) => state.kanban.users);
+  const tags = useSelector((state) => state.kanban.tags);
+  const assignee = users[task.assignee]
+    ? {
+        _id: users[task.assignee]._id,
+        name: users[task.assignee].name,
+      }
+    : { _id: null };
 
   const handleClick = (event) => {
     if (event.defaultPrevented) {
@@ -43,9 +53,9 @@ const Task = ({ task, index, isSelected, isGhost, onTaskSelection, selectionCoun
     }
 
     try {
-      await dispatch(deleteTaskOnApi(task._id))
+      await dispatch(deleteTaskOnApi(task._id));
     } catch (e) {
-      toastr.error('An error occurred deleting the task.')
+      toastr.error("An error occurred deleting the task.");
     }
   };
 
@@ -56,9 +66,9 @@ const Task = ({ task, index, isSelected, isGhost, onTaskSelection, selectionCoun
 
         const classes = classNames({
           Task: true,
-          'mb-1': true,
-          'Task-selected': isSelected,
-          'Task-ghost': isGhost && !snapshot.isDragging
+          "mb-1": true,
+          "Task-selected": isSelected,
+          "Task-ghost": isGhost && !snapshot.isDragging,
         });
 
         return (
@@ -68,13 +78,13 @@ const Task = ({ task, index, isSelected, isGhost, onTaskSelection, selectionCoun
             {...provided.dragHandleProps}
             style={provided.draggableProps.style}
           >
-             <Card className={classes} onClick={handleClick}>
+            <Card className={classes} onClick={handleClick}>
               <Card.Body>
                 <Card.Title className="h6 clearfix">
                   <NavLink to={`/task/${task._id}`}> {task.title}</NavLink>
                 </Card.Title>
 
-                <div className='d-flex'>
+                <div className="d-flex">
                   <div className="flex-grow-1">
                     <Card.Text className="small">
                       <strong className="mr-2">Assignee:</strong>
@@ -91,9 +101,13 @@ const Task = ({ task, index, isSelected, isGhost, onTaskSelection, selectionCoun
                       <strong className="mr-2">Due Date:</strong>
                       <FilterBadge
                         field="due_date"
-                        value={task.due_date &&  moment(task.due_date).format('YYYY-MM-DD')}
+                        value={
+                          task.due_date &&
+                          moment(task.due_date).format("YYYY-MM-DD")
+                        }
                         allowEmptySearch
-                        emptyMessage="No Set" />
+                        emptyMessage="No Set"
+                      />
                     </Card.Text>
 
                     <Card.Text className="small">
@@ -109,13 +123,20 @@ const Task = ({ task, index, isSelected, isGhost, onTaskSelection, selectionCoun
 
                   <div className="flex-grow-0 align-self-end">
                     {shouldShowSelection && (
-                      <h3><Badge variant="primary" size="lg">{selectionCount}</Badge></h3>
+                      <h3>
+                        <Badge variant="primary" size="lg">
+                          {selectionCount}
+                        </Badge>
+                      </h3>
                     )}
 
                     {!shouldShowSelection && (
                       <ButtonGroup size={"sm"} className="float-right">
                         <NavLink
-                          to={{ pathname: `/task/${task._id}/edit`, search: history.location.search }}
+                          to={{
+                            pathname: `/task/${task._id}/edit`,
+                            search: history.location.search,
+                          }}
                           className="btn btn-outline-primary"
                         >
                           <FontAwesomeIcon icon="edit" />
@@ -130,13 +151,20 @@ const Task = ({ task, index, isSelected, isGhost, onTaskSelection, selectionCoun
 
                 <div>
                   {task.tags.map((tId) => (
-                    <FilterBadge key={tId} field="tags" value={tags[tId]._id} label={tags[tId].name} variant={"primary"} classNames={"mr-2"}/>
+                    <FilterBadge
+                      key={tId}
+                      field="tags"
+                      value={tags[tId]._id}
+                      label={tags[tId].name}
+                      variant={"primary"}
+                      classNames={"mr-2"}
+                    />
                   ))}
                 </div>
               </Card.Body>
             </Card>
           </div>
-        )
+        );
       }}
     </Draggable>
   );

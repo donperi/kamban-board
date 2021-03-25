@@ -1,18 +1,18 @@
 export const apiRequest = async (url, options) => {
   const defaultOptions = {
     headers: {
-      'content-type': 'application/json'
-    }
-  }
+      "content-type": "application/json",
+    },
+  };
   try {
     const response = await fetch(url, {
       ...defaultOptions,
-      ...options
+      ...options,
     });
     if (!response.ok) {
       return Promise.resolve({
         error: true,
-        status: response.status
+        status: response.status,
       });
     }
 
@@ -21,14 +21,14 @@ export const apiRequest = async (url, options) => {
     return Promise.resolve({
       error: true,
       status: 500,
-      message: e.message
-    })
+      message: e.message,
+    });
   }
-}
+};
 
 export const apiUrl = (url, query = {}) => {
   url = new URL(`${window.location.protocol}//${window.location.host}${url}`);
-  Object.keys(query).forEach(key => url.searchParams.append(key, query[key]));
+  Object.keys(query).forEach((key) => url.searchParams.append(key, query[key]));
 
   return url;
 };

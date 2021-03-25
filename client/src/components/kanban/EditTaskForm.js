@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
-import {withRouter} from "react-router-dom";
-import toastr from 'toastr';
+import { withRouter } from "react-router-dom";
+import toastr from "toastr";
 
 import TaskForm from "./TaskForm";
-import {updateTask} from "../../services/kanban";
+import { updateTask } from "../../services/kanban";
 
 const AddTaskForm = ({ match, history }) => {
   const [show, setShow] = useState(true);
-  const tasks = useSelector(state => state.kanban.tasks);
+  const tasks = useSelector((state) => state.kanban.tasks);
   const dispatch = useDispatch();
 
   const task = tasks[match.params.id];
@@ -23,8 +23,8 @@ const AddTaskForm = ({ match, history }) => {
     setShow(false);
     setTimeout(() => {
       history.push({
-        pathname: '/',
-        search: history.location.search
+        pathname: "/",
+        search: history.location.search,
       });
     }, 200);
   };
@@ -42,7 +42,7 @@ const AddTaskForm = ({ match, history }) => {
   return (
     <Modal size="lg" show={show} onHide={onHide} backdrop="static">
       <Modal.Header closeButton>
-        <Modal.Title >Add Task</Modal.Title>
+        <Modal.Title>Add Task</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <TaskForm
@@ -60,7 +60,7 @@ const AddTaskForm = ({ match, history }) => {
         />
       </Modal.Body>
     </Modal>
-  )
+  );
 };
 
 export default withRouter(AddTaskForm);

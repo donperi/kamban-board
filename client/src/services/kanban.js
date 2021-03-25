@@ -6,9 +6,9 @@ import {
   addUsers,
   addNewTask,
   addFilteredTasks,
-  setSettings
+  setSettings,
 } from "../modules/kanban";
-import {apiUrl, apiRequest} from "../utils";
+import { apiUrl, apiRequest } from "../utils";
 
 export const fetchTask = (id) => async (dispatch) => {
   const response = await apiRequest(apiUrl(`/api/tasks/${id}`));
@@ -18,11 +18,11 @@ export const fetchTask = (id) => async (dispatch) => {
   }
 
   dispatch(addTasks([response.data]));
-  return response.data
+  return response.data;
 };
 
 export const fetchTasks = () => async (dispatch) => {
-  const response = await apiRequest(apiUrl('/api/tasks'));
+  const response = await apiRequest(apiUrl("/api/tasks"));
 
   if (response.error) {
     return Promise.reject(response);
@@ -35,9 +35,9 @@ export const fetchTasks = () => async (dispatch) => {
 export const createTask = (task) => async (dispatch) => {
   task.assignee = task.assignee || null;
 
-  const response = await apiRequest(apiUrl('/api/tasks'), {
-    method: 'post',
-    body: JSON.stringify(task)
+  const response = await apiRequest(apiUrl("/api/tasks"), {
+    method: "post",
+    body: JSON.stringify(task),
   });
 
   if (response.error) {
@@ -52,8 +52,8 @@ export const updateTask = (id, task) => async (dispatch) => {
   task.assignee = task.assignee || null;
 
   const response = await apiRequest(apiUrl(`/api/tasks/${id}`), {
-    method: 'put',
-    body: JSON.stringify(task)
+    method: "put",
+    body: JSON.stringify(task),
   });
 
   if (response.error) {
@@ -64,25 +64,24 @@ export const updateTask = (id, task) => async (dispatch) => {
   return response.data;
 };
 
-export const bulkEditTasks =(tasksIds, props) => async (dispatch) => {
+export const bulkEditTasks = (tasksIds, props) => async (dispatch) => {
   const data = { tasks: tasksIds, ...props };
 
-  const response = await apiRequest(apiUrl('/api/tasks/bulk_edit'), {
-    method: 'put',
-    body: JSON.stringify(data)
+  const response = await apiRequest(apiUrl("/api/tasks/bulk_edit"), {
+    method: "put",
+    body: JSON.stringify(data),
   });
 
   if (response.error) {
-    return Promise.reject(response)
+    return Promise.reject(response);
   }
 
   dispatch(addTasks(response.data));
-  return response.data
-
+  return response.data;
 };
 
 export const filterTasks = (query = {}) => async (dispatch) => {
-  const response = await apiRequest(apiUrl('/api/tasks', query));
+  const response = await apiRequest(apiUrl("/api/tasks", query));
 
   if (response.error) {
     return Promise.reject(response);
@@ -93,27 +92,29 @@ export const filterTasks = (query = {}) => async (dispatch) => {
 };
 
 export const fetchStages = () => async (dispatch) => {
-  const response = await apiRequest(apiUrl('/api/stages'));
+  const response = await apiRequest(apiUrl("/api/stages"));
 
   if (response.error) {
-    return Promise.reject(response)
+    return Promise.reject(response);
   }
 
   dispatch(addStages(response.data));
   return response.data;
 };
 
-export const moveTasksOnApi = (tasksIds, toStageId, atIndex) => async (dispatch) => {
-  const response  = await apiRequest(apiUrl('/api/tasks/move'), {
-    method: 'put',
+export const moveTasksOnApi = (tasksIds, toStageId, atIndex) => async (
+  dispatch
+) => {
+  const response = await apiRequest(apiUrl("/api/tasks/move"), {
+    method: "put",
     headers: {
-      'content-type': 'application/json'
+      "content-type": "application/json",
     },
     body: JSON.stringify({
       tasks: tasksIds,
       toStage: toStageId,
-      atIndex
-    })
+      atIndex,
+    }),
   });
 
   if (response.error) {
@@ -128,7 +129,7 @@ export const moveTasksOnApi = (tasksIds, toStageId, atIndex) => async (dispatch)
 
 export const deleteTaskOnApi = (taskId) => async (dispatch) => {
   const response = await apiRequest(apiUrl(`/api/tasks/${taskId}`), {
-    method: 'delete'
+    method: "delete",
   });
 
   if (response.error) {
@@ -142,7 +143,7 @@ export const deleteTaskOnApi = (taskId) => async (dispatch) => {
 // Tags
 
 export const fetchTags = () => async (dispatch) => {
-  const response = await  apiRequest(apiUrl('/api/tags'));
+  const response = await apiRequest(apiUrl("/api/tags"));
 
   if (response.error) {
     return Promise.reject(response);
@@ -152,11 +153,10 @@ export const fetchTags = () => async (dispatch) => {
   return response.data;
 };
 
-
 // Users
 
 export const fetchUsers = () => async (dispatch) => {
-  const response = await  apiRequest(apiUrl('/api/users'));
+  const response = await apiRequest(apiUrl("/api/users"));
 
   if (response.error) {
     return Promise.reject(response);
@@ -167,13 +167,13 @@ export const fetchUsers = () => async (dispatch) => {
 };
 
 export const createUser = (body) => async (dispatch) => {
-  const response = await apiRequest('/api/users', {
-    method: 'post',
-    body: JSON.stringify(body)
+  const response = await apiRequest("/api/users", {
+    method: "post",
+    body: JSON.stringify(body),
   });
 
   if (response.error) {
-    return Promise.reject(response)
+    return Promise.reject(response);
   }
 
   dispatch(addUsers([response.data]));
@@ -183,7 +183,7 @@ export const createUser = (body) => async (dispatch) => {
 // Settings
 
 export const fetchSettings = () => async (dispatch) => {
-  const response = await  apiRequest(apiUrl('/api/settings'));
+  const response = await apiRequest(apiUrl("/api/settings"));
 
   if (response.error) {
     return Promise.reject(response);
@@ -194,9 +194,9 @@ export const fetchSettings = () => async (dispatch) => {
 };
 
 export const updateSettings = (settings) => async (dispatch) => {
-  const response = await apiRequest(apiUrl('/api/settings'), {
-    method: 'put',
-    body: JSON.stringify(settings)
+  const response = await apiRequest(apiUrl("/api/settings"), {
+    method: "put",
+    body: JSON.stringify(settings),
   });
 
   if (response.error) {

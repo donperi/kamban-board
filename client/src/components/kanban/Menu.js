@@ -1,28 +1,38 @@
-import React from 'react';
+import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-import {NavLink, withRouter} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { NavLink, withRouter } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import BulkEditMenu from "./BulkEditMenu";
 import Badge from "react-bootstrap/Badge";
 import FilterForm from "./FIlterForm";
 import SettingsForm from "./SettingsForm";
 
-const Menu = ({ isFiltering, filteredTasks, selectedTasks, history, settings }) => {
+const Menu = ({
+  isFiltering,
+  filteredTasks,
+  selectedTasks,
+  history,
+  settings,
+}) => {
   let filterBadge = null;
   if (filteredTasks) {
-    filterBadge = (<Badge variant={'info'} className='mr-2'>ON</Badge>)
+    filterBadge = (
+      <Badge variant={"info"} className="mr-2">
+        ON
+      </Badge>
+    );
   }
 
   const handleClear = () => {
     history.push({
       pathname: history.location.pathname,
-      search: ''
+      search: "",
     });
-  }
+  };
 
   return (
     <Navbar bg="light" expand="lg" className="mb-3 d-block d-md-flex">
@@ -30,7 +40,7 @@ const Menu = ({ isFiltering, filteredTasks, selectedTasks, history, settings }) 
 
       <div className="ml-auto d-flex flex-column flex-sm-row flex-grow-1">
         <ButtonToolbar className="ml-auto">
-          {isFiltering && <div className={'p-2'}>Filtering...</div>}
+          {isFiltering && <div className={"p-2"}>Filtering...</div>}
           <Dropdown key={history.location.search} className="mr-2">
             <Dropdown.Toggle variant="outline-success" id="filter-menu">
               {filterBadge}
@@ -45,8 +55,7 @@ const Menu = ({ isFiltering, filteredTasks, selectedTasks, history, settings }) 
             />
           </Dropdown>
 
-          {filteredTasks
-          && (
+          {filteredTasks && (
             <Button variant="danger" className="mr-2" onClick={handleClear}>
               Clear Filter
             </Button>
@@ -57,13 +66,19 @@ const Menu = ({ isFiltering, filteredTasks, selectedTasks, history, settings }) 
             Add Task
           </NavLink>
 
-          {(selectedTasks.length > 0) && (
+          {selectedTasks.length > 0 && (
             <Dropdown className="mr-2">
               <Dropdown.Toggle variant="outline-info" id="bulk-edit-menu">
-                <Badge pill variant="info" className="mr-2">{selectedTasks.length}</Badge>
+                <Badge pill variant="info" className="mr-2">
+                  {selectedTasks.length}
+                </Badge>
                 Quick Edit
               </Dropdown.Toggle>
-              <Dropdown.Menu alignRight as={BulkEditMenu} selectedTasks={selectedTasks} />
+              <Dropdown.Menu
+                alignRight
+                as={BulkEditMenu}
+                selectedTasks={selectedTasks}
+              />
             </Dropdown>
           )}
           <Dropdown key={JSON.stringify(settings)} className="mr-2">
@@ -82,7 +97,7 @@ const Menu = ({ isFiltering, filteredTasks, selectedTasks, history, settings }) 
         </ButtonToolbar>
       </div>
     </Navbar>
-  )
+  );
 };
 
 export default withRouter(Menu);

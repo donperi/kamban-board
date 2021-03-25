@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const Stage = require('./models/Stage');
-const Tag = require('./models/Tag');
-const Setting = require('./models/Setting');
-const { STAGES, TAGS } = require('./constants');
+const mongoose = require("mongoose");
+const Stage = require("./models/Stage");
+const Tag = require("./models/Tag");
+const Setting = require("./models/Setting");
+const { STAGES, TAGS } = require("./constants");
 
 const setupDatabase = async () => {
   try {
@@ -20,7 +20,7 @@ const setupDatabase = async () => {
   // Stages Setup
   for (const stage of Object.values(STAGES)) {
     try {
-      await (new Stage({ name: stage })).save();
+      await new Stage({ name: stage }).save();
     } catch (e) {
       console.log(`Skipping stage creation: "${stage}" already exists`);
     }
@@ -29,7 +29,7 @@ const setupDatabase = async () => {
   // Tags Setup
   for (const tag of TAGS) {
     try {
-      await (new Tag({ name: tag })).save();
+      await new Tag({ name: tag }).save();
     } catch (e) {
       console.log(`Skipping tag creation: "${tag}" already exists`);
     }
@@ -37,7 +37,7 @@ const setupDatabase = async () => {
 
   // Settings Setup
   let settings = await Setting.findOne({});
-  if  (!settings) {
+  if (!settings) {
     settings = await Setting.create({});
   }
 
@@ -48,23 +48,28 @@ const setupDatabase = async () => {
         carry[stage._id] = true;
         return carry;
       }, {});
-    }
-  }
+    },
+  };
 
-  const defaultValues = await Object.keys(defaultSettingResolver).reduce(async (prevPromise, key) => {
-    const carry = await prevPromise;
-    if (settings[key]) { return carry; }
+  const defaultValues = await Object.keys(defaultSettingResolver).reduce(
+    async (prevPromise, key) => {
+      const carry = await prevPromise;
+      if (settings[key]) {
+        return carry;
+      }
 
-    carry[key] = await defaultSettingResolver[key]();
-    return carry;
-  }, Promise.resolve({}));
+      carry[key] = await defaultSettingResolver[key]();
+      return carry;
+    },
+    Promise.resolve({})
+  );
 
   if (Object.keys(defaultValues).length) {
-    console.log('Create default values for settings' , defaultValues);
-    await Setting.updateOne({}, defaultValues)
+    console.log("Create default values for settings", defaultValues);
+    await Setting.updateOne({}, defaultValues);
   }
 };
 
 module.exports = {
-  setupDatabase
+  setupDatabase,
 };

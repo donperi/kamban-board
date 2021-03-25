@@ -1,7 +1,17 @@
-import React from 'react';
-import {withRouter} from "react-router-dom";
+import React from "react";
+import { withRouter } from "react-router-dom";
 
-const FilterBadge = ({ field, value, label = null, allowEmptySearch, location, history, emptyMessage = 'N/A', variant='secondary', classNames }) => {
+const FilterBadge = ({
+  field,
+  value,
+  label = null,
+  allowEmptySearch,
+  location,
+  history,
+  emptyMessage = "N/A",
+  variant = "secondary",
+  classNames,
+}) => {
   const handleClick = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -12,8 +22,8 @@ const FilterBadge = ({ field, value, label = null, allowEmptySearch, location, h
 
     history.push({
       pathname: location.pathname,
-      search: `?${field}=${value || null}`
-    })
+      search: `?${field}=${value || null}`,
+    });
   };
 
   return (
@@ -21,7 +31,7 @@ const FilterBadge = ({ field, value, label = null, allowEmptySearch, location, h
       onClick={handleClick}
       className={`FilterBadge badge badge-${variant} ${classNames}`}
     >
-      {label || value || (<i>{emptyMessage}</i>)}
+      {label || value || <i>{emptyMessage}</i>}
     </span>
   );
 };

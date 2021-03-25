@@ -1,20 +1,18 @@
-const HttpStatus = require('http-status-codes');
-const moment = require('moment');
-const ObjectId = require('mongoose').Types.ObjectId;
+const HttpStatus = require("http-status-codes");
+const moment = require("moment");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 const appResponse = (res, data, status = HttpStatus.OK, message = null) => {
   if (!message) {
     message = HttpStatus.getStatusText(status);
   }
 
-  res
-    .status(status)
-    .json( {
-      message: message,
-      error: status >= 400,
-      status,
-      data
-    });
+  res.status(status).json({
+    message: message,
+    error: status >= 400,
+    status,
+    data,
+  });
 };
 
 const filterMapper = (filters, mapper = {}) => {
@@ -23,14 +21,14 @@ const filterMapper = (filters, mapper = {}) => {
       return carry;
     }
 
-    if (filters[key] === 'null') {
+    if (filters[key] === "null") {
       carry[key] = null;
       return carry;
     }
 
     if (mapper[key]) {
       carry[key] = mapper[key](filters[key]);
-      return carry
+      return carry;
     }
 
     carry[key] = filters[key] === "null" ? null : filters[key];
@@ -39,9 +37,9 @@ const filterMapper = (filters, mapper = {}) => {
   }, {});
 };
 
-const filterUndefinedValues  = (obj) => {
+const filterUndefinedValues = (obj) => {
   Object.keys(obj).forEach(function (key) {
-    if(obj[key] === undefined){
+    if (obj[key] === undefined) {
       delete obj[key];
     }
   });
@@ -49,21 +47,28 @@ const filterUndefinedValues  = (obj) => {
   return obj;
 };
 
-const objectIdSanitizer = value => {
-  if (value === undefined) { return; }
-  if (value === "null") { return null; }
-  if (!value || !ObjectId.isValid(value)) { return new ObjectId(); }
+const objectIdSanitizer = (value) => {
+  if (value === undefined) {
+    return;
+  }
+  if (value === "null") {
+    return null;
+  }
+  if (!value || !ObjectId.isValid(value)) {
+    return new ObjectId();
+  }
 
   return value;
 };
 
-const nullStringSanitizer = value => value || null;
+const nullStringSanitizer = (value) => value || null;
 
-const dateSanitizer  = value => {
-  if (value === 'null' || !value) { return value; }
+const dateSanitizer = (value) => {
+  if (value === "null" || !value) {
+    return value;
+  }
   return moment(value).toDate();
 };
-
 
 module.exports = {
   appResponse,
@@ -71,5 +76,5 @@ module.exports = {
   filterUndefinedValues,
   objectIdSanitizer,
   dateSanitizer,
-  nullStringSanitizer
+  nullStringSanitizer,
 };

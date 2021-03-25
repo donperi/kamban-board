@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import {useDispatch} from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Modal from "react-bootstrap/Modal";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import TaskForm from "./TaskForm";
-import {createTask} from "../../services/kanban";
+import { createTask } from "../../services/kanban";
 
 const AddTaskForm = ({ history }) => {
   const [show, setShow] = useState(true);
@@ -14,8 +14,8 @@ const AddTaskForm = ({ history }) => {
     setShow(false);
     setTimeout(() => {
       history.push({
-        pathname: '/',
-        search: history.location.search
+        pathname: "/",
+        search: history.location.search,
       });
     }, 200);
   };
@@ -33,16 +33,16 @@ const AddTaskForm = ({ history }) => {
   return (
     <Modal size="lg" show={show} onHide={onHide} backdrop="static">
       <Modal.Header closeButton>
-        <Modal.Title >Add Task</Modal.Title>
+        <Modal.Title>Add Task</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <TaskForm
           initialValues={{
-            title: '',
-            description: '',
-            due_date: '',
-            assignee: '',
-            time_estimates: '',
+            title: "",
+            description: "",
+            due_date: "",
+            assignee: "",
+            time_estimates: "",
             tags: [],
           }}
           onSubmit={handleSubmit}
@@ -51,7 +51,7 @@ const AddTaskForm = ({ history }) => {
         />
       </Modal.Body>
     </Modal>
-  )
+  );
 };
 
 export default withRouter(AddTaskForm);

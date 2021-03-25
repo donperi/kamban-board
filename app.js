@@ -1,14 +1,14 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
 const port = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
-const { setupDatabase } = require('./db');
-const routes = require('./routes');
+const { setupDatabase } = require("./db");
+const routes = require("./routes");
 
 const app = express();
 
@@ -16,14 +16,13 @@ const app = express();
   await setupDatabase();
 
   app.use(bodyParser.json());
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(express.static(path.join(__dirname, "client/build")));
   app.use(Object.values(routes));
 
-  app.get('*', (req,res) =>{
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
   });
 
   app.listen(port);
-  console.log('App is listening on port ' + port);
+  console.log("App is listening on port " + port);
 })();
-

@@ -32,8 +32,12 @@
 /*  }*/
 /*}*/
 
-html, body, #root, .App { height: 100%; }
-
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}
 
 .height-full {
   height: 100%;
@@ -78,7 +82,6 @@ html, body, #root, .App { height: 100%; }
   }
 }
 
-
 .TaskDetail {
   ul {
     list-style: none;
@@ -88,7 +91,6 @@ html, body, #root, .App { height: 100%; }
     }
   }
 }
-
 
 .FilterBadge {
   font-size: 11px;

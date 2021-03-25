@@ -1,19 +1,25 @@
-import {useEffect,useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
 
-import {fetchSettings, fetchStages, fetchTags, fetchTasks, fetchUsers} from "../services/kanban";
+import {
+  fetchSettings,
+  fetchStages,
+  fetchTags,
+  fetchTasks,
+  fetchUsers,
+} from "../services/kanban";
 
 function useKanbanInitializer() {
   const dispatch = useDispatch();
-  const tasks = useSelector(state => state.kanban.tasks);
-  const stages = useSelector(state => state.kanban.stages);
-  const settings = useSelector(state => state.kanban.settings);
+  const tasks = useSelector((state) => state.kanban.tasks);
+  const stages = useSelector((state) => state.kanban.stages);
+  const settings = useSelector((state) => state.kanban.settings);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = 'Kanban Board';
+    document.title = "Kanban Board";
     (async () => {
       try {
         await dispatch(fetchSettings());

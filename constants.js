@@ -1,11 +1,9 @@
 module.exports = {
   STAGES: {
-    TODO: 'To Do',
-    IN_PROGRESS: 'In Progress',
-    READY: 'Ready',
-    DONE: 'Done'
+    TODO: "To Do",
+    IN_PROGRESS: "In Progress",
+    READY: "Ready",
+    DONE: "Done",
   },
-  TAGS: [
-    'SEO Article', 'Longform', 'Blog Post'
-  ]
+  TAGS: ["SEO Article", "Longform", "Blog Post"],
 };
