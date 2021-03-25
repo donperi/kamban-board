@@ -12,7 +12,7 @@ Ex: `client/components/SomeComponent.js -> client/components/SomeComponent.test.
 
 ### Requirements
 
-- Test `client/services/kanban.js` checking if the correct API request is made to the API.
+- Test `client/services/kanban.js` checking if that functions are making the correct API requests.
 - Test `client/module/kanban.js` checking that actions are mutation the state correctly.
 - Test `client/comopnents/kanban/TaskForm.js` checking that the submittion handler is triggering correctly.
 - Test `client/components/kanban/Task.js` checking that:
@@ -28,6 +28,7 @@ Bonus
 ## Integration Testing.
 
 Use whatever tool you feel confortable with (Cypress, Selenium, Puppeteer).
+
 This should be interacting with the APi.
 
 ### Requirements
